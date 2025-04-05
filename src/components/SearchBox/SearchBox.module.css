@@ -1,0 +1,52 @@
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: auto;
+  height: auto;
+  position: relative;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+.input {
+  border-radius: 40px;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  background-color: #f6f6f6;
+  transition: all 0.3s ease;
+  width: 310px;
+  height: 30px;
+  border: none;
+  outline: none;
+  padding-left: 30px;
+}
+
+.input:focus {
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+}
+
+.input:focus + .icon {
+  color: green;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 17px;
+  top: 33px;
+  transition: color 0.3s ease;
+}
+
+.cross {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 17px;
+  top: 33px;
+  color: red;
+}
+
+.par {
+  color: red;
+}
