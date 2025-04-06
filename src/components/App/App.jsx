@@ -1,17 +1,27 @@
 import SearchBox from '../SearchBox/SearchBox';
 import s from './App.module.css';
 import contactData from '../../assets/contacts.json';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Contact from '../Contact/Contact';
 import ContactForm from '../ContactForm/ContactForm';
+
 const App = () => {
-  const [contactsList, setContactsList] = useState(contactData);
+  const [contactsList, setContactsList] = useState(() => {
+    const savedContacts = localStorage.getItem('contacts');
+
+    return savedContacts ? JSON.parse(savedContacts) : contactData;
+  });
   const [searchBy, setSearchBy] = useState('');
-  const [hovered, setHovered] = useState(false);
-  const [formOpen, setFormOpen] = useState(false);
+
   const filteredValue = contactsList.filter(item =>
     item.name.toLocaleLowerCase().includes(searchBy.toLocaleLowerCase())
   );
+
+  const handleAddList = setValue => {
+    setContactsList(prevList => {
+      return [...prevList, setValue];
+    });
+  };
 
   const handleFilterValue = e => {
     const value = e.target.value;
@@ -20,34 +30,25 @@ const App = () => {
   };
 
   const handleDeleteItem = deleteId => {
-    setContactsList(onDelete => {
-      return onDelete.filter(task => task.id !== deleteId);
+    setContactsList(prevTasks => {
+      return prevTasks.filter(task => task.id !== deleteId);
     });
   };
 
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contactsList));
+  }, [contactsList]);
+
   return (
     <div className={s.wrapper}>
-      <div className={s.container}>
-        <div className={s.paper}>
-          <ContactForm
-            hovered={hovered}
-            onHover={setHovered}
-            openForm={formOpen}
-            onClick={setFormOpen}
-          />
-          <div className={s.openBookBefore}>
-            <div className={s.openBook}>
-              <SearchBox
-                value={searchBy}
-                filter={handleFilterValue}
-                toggleImg={filteredValue.length}
-                toggleResult={contactsList.length}
-              />
-              <Contact list={filteredValue} onDelete={handleDeleteItem} />
-            </div>
-          </div>
-        </div>
-      </div>
+      <ContactForm onAdd={handleAddList} />
+      <SearchBox
+        value={searchBy}
+        filter={handleFilterValue}
+        toggleImg={filteredValue.length}
+        toggleResult={contactsList.length}
+      />
+      <Contact list={filteredValue} onDelete={handleDeleteItem} />
     </div>
   );
 };
