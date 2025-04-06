@@ -7,9 +7,9 @@ import ContactForm from '../ContactForm/ContactForm';
 
 const App = () => {
   const [contactsList, setContactsList] = useState(() => {
-    const savedContacts = localStorage.getItem('contacts');
+    const savedContacts = JSON.parse(localStorage.getItem('contacts')) ?? '[]';
 
-    return savedContacts ? JSON.parse(savedContacts) : contactData;
+    return savedContacts.length === 0 ? contactData : savedContacts;
   });
   const [searchBy, setSearchBy] = useState('');
 
