@@ -1,26 +1,23 @@
-import { BiSolidUser } from 'react-icons/bi';
-import { FaPhone } from 'react-icons/fa6';
+import Contact from '../Contact/Contact';
 import s from './ContactList.module.css';
 
-const ContactList = ({ name, number, id, onDelete }) => {
+const ContactList = ({ list, onDelete }) => {
   return (
     <>
-      <div className={s.info}>
-        <p className={s.par}>
-          {<BiSolidUser className={s.icon} />}
-          {name}
-        </p>
-        <p className={s.par}>
-          {<FaPhone className={s.icon} />}
-          {number}
-        </p>
-      </div>
-
-      <div className={s.buttonCont}>
-        <button onClick={() => onDelete(id)} className={s.button}>
-          Delete
-        </button>
-      </div>
+      <ul className={s.list}>
+        {list.map(item => {
+          return (
+            <li className={s.item} key={item.id}>
+              <Contact
+                id={item.id}
+                name={item.name}
+                number={item.number}
+                onDelete={onDelete}
+              />
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 };
